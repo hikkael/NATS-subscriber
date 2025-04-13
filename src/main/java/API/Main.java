@@ -5,7 +5,8 @@ import io.nats.client.Nats;
 import io.nats.client.Dispatcher;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-
+import Buisness.Services.*;
+import Buisness.Services.Implementation.MessageProcessorImp;
 
 public class Main {
   public static void main(String[] args) {
@@ -14,13 +15,14 @@ public class Main {
         natsURL = "nats://127.0.0.1:4222";
     }
 
+    MessageProcessor mProcessor = new MessageProcessorImp();
+
 
     try (Connection nc = Nats.connect(natsURL)) {
       
         Dispatcher dispatcher = nc.createDispatcher((msg) -> {
-            System.out.printf("%s on subject %s\n",
-                new String(msg.getData(), StandardCharsets.UTF_8),
-                msg.getSubject());
+                String json = new String(msg.getData(), StandardCharsets.UTF_8);
+                mProcessor.handleMessage(json);
         });
         
         dispatcher.subscribe("messages");
