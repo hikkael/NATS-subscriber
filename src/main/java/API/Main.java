@@ -10,23 +10,23 @@ import Buisness.Services.Implementation.MessageProcessorImp;
 
 public class Main {
   public static void main(String[] args) {
-    String natsURL = System.getenv("NATS_URL");
-    if (natsURL == null) {
-        natsURL = "nats://127.0.0.1:4222";
-    }
 
     MessageProcessor mProcessor = new MessageProcessorImp();
 
 
-    try (Connection nc = Nats.connect(natsURL)) {
+    try (Connection nc = Nats.connect("nats://localhost:4222")) {
       
         Dispatcher dispatcher = nc.createDispatcher((msg) -> {
                 String json = new String(msg.getData(), StandardCharsets.UTF_8);
                 mProcessor.handleMessage(json);
         });
         
-        dispatcher.subscribe("messages");
+        dispatcher.subscribe("messages.*");
+
+
         Thread.sleep(200);
+
+
 
 
     } catch (InterruptedException | IOException e) {
