@@ -1,20 +1,17 @@
 package Data.Entities;
 
-import java.sql.Date;
 
 public class Message {
 
-    private String messageText;
-    private Date date;
+    private String content;
+    //private String timestamp;
 
-    public Message(){}
+    public Message() {} // required for Jackson
 
-    public String getmessageText(){
-        return messageText;
-    }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 
-    public Date getDate() {
-        return date;
-    }
+    //public String getTimestamp() { return timestamp; }
+    //public void setTimestamp(String timestamp) { this.timestamp = timestamp; }
 
 }
